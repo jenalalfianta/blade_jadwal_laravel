@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('jadwal', [JadwalController::class, 'index'] )->name('jadwal.index');
+Route::post('jadwal', [JadwalController::class, 'store'] )->name('jadwal.store');
 
 Route::get('/', function () {
     return view('welcome');
