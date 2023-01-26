@@ -87,8 +87,8 @@ class JadwalController extends Controller
         ]);
 
         $jadwal = Jadwal::create([
-            'user_id' => 2,
-            'ruang_id' => 3,
+            'user_id' => 1,
+            'ruang_id' => 1,
             'title' => $request->title,
             'start' => $request->start_date,
             'finish' => $request->end_date,

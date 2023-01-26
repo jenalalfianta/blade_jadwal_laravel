@@ -19,169 +19,136 @@
 
     @include('jadwal.layout.modal')
 
-{{--
-    var calendar = $('#calendar').fullCalendar({
-        events: @json($datas),
-        header:{
-            left:'prev,next today',
-            center:'title',
-            right:'month,agendaWeek,agendaDay'
-        },
-        selectable:true,
-        selectHelper:true,
-        select: function(start, end, allDays){
-            $('#openModal').click()
-            $('#title').val('')
+    @push('scripts')
 
-            $('#saveDate').click(function(){
-                event.preventDefault();
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.3/index.global.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+        <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
 
-                var title = $('#title').val();
-                var start_date = moment(start).format('Y-M-D h:mm:ss');
-                var end_date = moment(end).format('Y-M-D h:mm:ss');
+        <script>
+            var calendar;
 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            $( document ).ready(function() {
+
+                var calendarEl = $('#calendar')[0];
+                    calendar = new FullCalendar.Calendar(calendarEl, {
+                    events: @json($datas),
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
                     },
-                    type: "POST",
-                    url: "{{route('jadwal.store')}}",
-                    dataType: "json",
-                    data: {title, start_date, end_date},
-                    success: function(response){
-                        $('#titleError').html('')
-                        $('#title').html('')
-                        $('#closeModal').click()
-                        $('#calendar').fullCalendar('renderEvent', {
-                            'title': response.title,
-                            'start': response.start,
-                            'finish': response.finish,
+                    buttonText: {
+                        today: 'hari ini',
+                        month: 'bulan',
+                        week: 'minggu',
+                        day: 'hari',
+                        list: 'daftar'
+                    },
+                    locale: 'id',
+                    windowResizeDelay: 0,
+                    height: 'auto',
+                    slotMinTime: "07:00:00",
+                    slotMaxTime: "17:00:00",
+                    allDaySlot: false,
+                    slotLabelFormat: {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: 'false'
+                    },
+                    eventTimeFormat: {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: 'false'
+                    },
+                    displayEventTime: true,
+                    displayEventEnd: true,
+                    eventDisplay: 'block',
+                    editable: true,
+                    selectable: true,
+                    eventLimit: true,
+                    unselectAuto: true,
+                    select: function(response) {
+                        console.log(response)
+                        $('#openModal').click()
+                        $('#title').val('')
+
+                        $('#saveDate').click(function(){
+                            event.preventDefault();
+
+                            var title = $('#title').val();
+                            var start_date = moment(response.start).format('Y-M-D h:mm:ss');
+                            var end_date = $('#title').val();
+
+                            $.ajax({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                type: "POST",
+                                url: "{{route('jadwal.store')}}",
+                                dataType: "json",
+                                data: {title, start_date, end_date},
+                                success: function(response){
+                                    $('#closeModal').click()
+                                    $('#title').val('')
+                                    // calendar.removeAllEvents()
+                                    addNewEvent(response)
+
+                                },
+                                error: function(error){
+                                    $('#titleError').html(error.responseJSON.errors.title)
+
+                                },
+                            })
+
                         })
-                    },
-                    error: function(error){
-                        $('#titleError').html(error.responseJSON.errors.title)
-
                     },
                 })
 
+                function addNewEvent(response){
+                    console.log(response)
+                    calendar.addEvent({
+                        title: response.title,
+                        start: response.start,
+                        end: response.end,
+                        allDay: true,
+                    });
+                }
+
+                calendar.render();
+
+                $("#startDate").flatpickr(
+                    {
+                        altInput: true,
+                        altFormat: "F j, Y",
+                        dateFormat: "Y-m-d",
+                        locale: 'id',
+                    }
+                )
+                $("#startTime").flatpickr(
+                    {
+                        enableTime: true,
+                        noCalendar: true,
+                        dateFormat: "H:i",
+                        locale: 'id',
+                    }
+                )
+
+                $("#endTime").flatpickr(
+                    {
+                        enableTime: true,
+                        noCalendar: true,
+                        dateFormat: "H:i",
+                        locale: 'id',
+                    }
+                );
             })
-        },
-        // selectOverlap: true,
-        // editable:true,
-        locale: 'id',
-        height: 'auto',
-        minTime: '07:00:00',
-        maxTime: '17:00:00',
-        axisFormat: 'HH:mm',
-        timeFormat: 'HH:mm',
-        slotLabelFormat: 'HH:mm',
-        titleFormat: 'MMMM D , YYYY',
-        columnHeaderFormat: 'ddd-D',
-        // slotDuration: '1:00',
-        allDaySlot: false,
-        // windowResizeDelay: 0,
-        // eventLongPressDelay: 0,
-        // longPressDelay: 0,
-        displayEventEnd: true,
-    }) --}}
-
-    @push('scripts')
-        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/locale-all.js"></script> --}}
-
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.3/main.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.3/index.global.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-
-
-
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                events: @json($datas),
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                buttonText: {
-                    today: 'hari ini',
-                    month: 'bulan',
-                    week: 'minggu',
-                    day: 'hari',
-                    list: 'daftar'
-                },
-                locale: 'id',
-                windowResizeDelay: 0,
-                height: 'auto',
-                slotMinTime: "07:00:00",
-                slotMaxTime: "17:00:00",
-                allDaySlot: false,
-                slotLabelFormat: {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    omitZeroMinute: false,
-                    meridiem: 'false'
-                },
-                eventTimeFormat: {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    omitZeroMinute: false,
-                    meridiem: 'false'
-                },
-                displayEventTime: true,
-                displayEventEnd: true,
-                eventDisplay: 'block',
-                editable: true,
-                selectable: true,
-                eventLimit: true,
-                select: function(select) {
-                    $('#openModal').click()
-                    $('#title').val('')
-
-                    $('#saveDate').click(function(){
-                        event.preventDefault();
-
-                        var title = $('#title').val();
-                        var start_date = moment(select.start).format('Y-M-D h:mm:ss');
-                        var end_date = moment(select.end).format('Y-M-D h:mm:ss');
-
-                        $.ajax({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            type: "POST",
-                            url: "{{route('jadwal.store')}}",
-                            dataType: "json",
-                            data: {title, start_date, end_date},
-                            success: function(response){
-                                calendar.addEvent({
-                                    title: response.title,
-                                    start: response.start,
-                                    finish: response.finish,
-                                    allDay: true
-                                });
-                            },
-                            error: function(error){
-                                $('#titleError').html(error.responseJSON.errors.title)
-
-                            },
-                        })
-
-                    })
-                },
-            })
-
-            calendar.render()
-
-        })
-
 
 
         </script>
