@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('jadwal', [JadwalController::class, 'index'] )->name('jadwal.index');
-Route::post('jadwal', [JadwalController::class, 'store'] )->name('jadwal.store');
+Route::resource('jadwal', JadwalController::class);
 
 Route::get('/', function () {
     return view('welcome');

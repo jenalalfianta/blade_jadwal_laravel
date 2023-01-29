@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jadwal;
+use App\Models\Ruang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class JadwalController extends Controller
 {
@@ -15,53 +17,23 @@ class JadwalController extends Controller
      */
     public function index()
     {
-        $datas= [];
-
-        $jadwals = Jadwal::with(['user','ruang'])->get();
+        $datas      = [];
+        $ruangs     = Ruang::all();
+        $today      = Carbon::now()->toDateString();
+        $jadwals    = Jadwal::with(['user','ruang'])->where('start', '>=', $today)->get();
 
         foreach ($jadwals as $jadwal){
             $datas[] = [
-                'title' => $jadwal->ruang->nama_ruang,
-                'start' => $jadwal->start,
-                'end' => $jadwal->finish,
+                'title'      => $jadwal->ruang->nama_ruang,
+                'start'      => $jadwal->start,
+                'end'        => $jadwal->finish,
                 'keterangan' => $jadwal->keterangan,
-                'create_by' => $jadwal->user->name,
+                'create_by'  => $jadwal->user->name,
             ];
         }
 
-        return view('jadwal.index', compact('datas'));
+        return view('jadwal.index', compact('datas', 'ruangs'));
 
-        // all: [
-        //     App\Models\Jadwal {#4690
-        //       id: 1,
-        //       user_id: 1,
-        //       ruang_id: 1,
-        //       title: "Lokakarya Bahasa dan Sastra",
-        //       start: "2023-01-24 09:00:00",
-        //       finish: "2023-01-24 16:00:00",
-        //       keterangan: "fakultas",
-        //       created_at: "2023-01-24 09:32:24",
-        //       updated_at: null,
-        //       user: App\Models\User {#4696
-        //         id: 1,
-        //         name: "Jenal",
-        //         email: "jenalalfianta@gmail.com",
-        //         email_verified_at: "2023-01-24 09:30:50",
-        //         #password: "$2y$10$wlS38V3Xbt9h0OAptUo7.OUt9th1p0tV9.NyMT6L0SQiHjgvIt0Zu",
-        //         #remember_token: null,
-        //         created_at: "2023-01-24 02:30:37",
-        //         updated_at: "2023-01-24 02:30:37",
-        //       },
-        //       ruang: App\Models\Ruang {#4700
-        //         id: 1,
-        //         kode_ruang: "1",
-        //         nama_ruang: "Auditorium",
-        //         lantai_ruang: "5",
-        //         created_at: "2023-01-24 09:31:34",
-        //         updated_at: null,
-        //       },
-        //     },
-        //   ],
     }
 
     /**
@@ -82,20 +54,31 @@ class JadwalController extends Controller
      */
     public function store(Request $request)
     {
+
+        $today = Carbon::now()->toDateString();
+
         $request->validate([
-            'title' => 'required | string',
+            'title'         => 'required',
+            'ruang'         => 'required',
+            'startDate'     => 'required|after_or_equal:'.$today,
+            'startTime'     => 'required',
+            'endTime'       => 'required',
+            // 'keterangan'    => 'required',
         ]);
 
-        $jadwal = Jadwal::create([
-            'user_id' => 1,
-            'ruang_id' => 1,
-            'title' => $request->title,
-            'start' => $request->start_date,
-            'finish' => $request->end_date,
-            'keterangan' => 'fakultas',
+        $start  = $request->startDate.' '.$request->startTime.':00';
+        $finish = $request->startDate.' '.$request->endTime.':00';
+
+        Jadwal::create([
+            'user_id'       => $request->user,
+            'ruang_id'      => $request->ruang,
+            'title'         => $request->title,
+            'start'         => $start,
+            'finish'        => $finish,
+            'keterangan'    => $request->keterangan,
         ]);
 
-        return response()->json($jadwal);
+        return redirect(route('jadwal.index'));
 
     }
 
