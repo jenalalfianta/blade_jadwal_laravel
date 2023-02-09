@@ -29,13 +29,13 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
+            let datas = @json($datas);
+            let calendar;
+
             $( document ).ready(function() {
 
-    //input default value
-
-
     // modal jadwal show or hide
-                const $targetEl = document.getElementById('modalEl');
+                const $targetEl = document.getElementById('modalAdd');
                 const options = {
                     // placement: 'bottom-right',
                     backdrop: 'static',
@@ -43,20 +43,20 @@
                     closable: false,
                 };
 
-                const modal = new Modal($targetEl, options);
+                const modalAdd = new Modal($targetEl, options);
 
                 @if (count($errors) > 0)
-                    modal.show();
+                    modalAdd.show();
                 @endif
 
                 $('#closeModal').click(function(){
-                    modal.hide();
-                })
+                    modalAdd.hide();
+                });
 
     //fullcalendar js
-                var calendarEl = $('#calendar')[0];
+                let calendarEl = $('#calendar')[0];
                     calendar = new FullCalendar.Calendar(calendarEl, {
-                    events: @json($datas),
+                    events: datas,
                     initialView: 'dayGridMonth',
                     themeSystem: 'bootstrap5',
                     headerToolbar: {
@@ -107,12 +107,25 @@
                     eventDisplay: 'block',
                     editable: true,
                     selectable: true,
-                    eventLimit: true,
-                    unselectAuto: true,
-                    select: function(response) {
-
+                    eventClick: function(data) {
+                        let detail = $('#event-details-modal')
+                        modalEdit.show()
+                        let id = data.event.id
+                        console.log(id);
+                        console.log(datas);
+                        if (!!datas[id]) {
+                            console.log(datas[id]);
+                            detail.find('#title').text(datas[id].title)
+                            detail.find('#description').text(datas[id].description)
+                            detail.find('#start').text(datas[id].sdate)
+                            detail.find('#end').text(datas[id].edate)
+                            detail.find('#edit,#delete').attr('data-id', id)
+                            detail.modal('show')
+                        } else {
+                            alert("Event is undefined");
+                        }
                     },
-                })
+                });
 
                 calendar.render();
 
@@ -124,15 +137,18 @@
                         dateFormat: "Y-m-d",
                         locale: 'id',
                     }
-                )
+                );
+
                 $("#startTime").flatpickr(
                     {
                         enableTime: true,
                         noCalendar: true,
                         dateFormat: "H:i",
                         locale: 'id',
+                        minTime: "07:00",
+                        maxTime: "16:00"
                     }
-                )
+                );
 
                 $("#endTime").flatpickr(
                     {
@@ -140,14 +156,16 @@
                         noCalendar: true,
                         dateFormat: "H:i",
                         locale: 'id',
+                        minTime: "08:00",
+                        maxTime: "16:00"
                     }
                 );
 
     //select search js
-                $(document).ready(function() {
-                    $('.js-example-basic-single').select2();
-                });
-            })
+                $('.js-example-basic-single').select2();
+
+
+            });
 
         </script>
     @endpush

@@ -20,10 +20,12 @@ class JadwalController extends Controller
         $datas      = [];
         $ruangs     = Ruang::all();
         $today      = Carbon::now()->toDateString();
-        $jadwals    = Jadwal::with(['user','ruang'])->where('start', '>=', $today)->get();
+        // $jadwals    = Jadwal::with(['user','ruang'])->where('start', '>=', $today)->get();
+        $jadwals    = Jadwal::with(['user','ruang'])->get();
 
         foreach ($jadwals as $jadwal){
             $datas[] = [
+                'id'         => $jadwal->id,
                 'title'      => $jadwal->ruang->nama_ruang,
                 'start'      => $jadwal->start,
                 'end'        => $jadwal->finish,
@@ -61,8 +63,8 @@ class JadwalController extends Controller
             'title'         => 'required',
             'ruang'         => 'required',
             'startDate'     => 'required|after_or_equal:'.$today,
-            'startTime'     => 'required',
-            'endTime'       => 'required',
+            'startTime'     => 'required|date_format:H:i',
+            'endTime'       => 'required|date_format:H:i|after:startTime',
             // 'keterangan'    => 'required',
         ]);
 
