@@ -33,11 +33,9 @@
             let calendar;
 
             $( document ).ready(function() {
-
     // modal jadwal show or hide
                 const $targetEl = document.getElementById('modalAdd');
                 const options = {
-                    // placement: 'bottom-right',
                     backdrop: 'static',
                     backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
                     closable: false,
@@ -80,7 +78,7 @@
                         tambahButton: {
                             text: '+ Tambah Jadwal',
                             click: function() {
-                                modal.show();
+                                modalAdd.show();
                             }
                         }
                     },
@@ -107,20 +105,20 @@
                     eventDisplay: 'block',
                     editable: true,
                     selectable: true,
-                    eventClick: function(data) {
-                        let detail = $('#event-details-modal')
-                        modalEdit.show()
-                        let id = data.event.id
-                        console.log(id);
-                        console.log(datas);
-                        if (!!datas[id]) {
-                            console.log(datas[id]);
-                            detail.find('#title').text(datas[id].title)
-                            detail.find('#description').text(datas[id].description)
-                            detail.find('#start').text(datas[id].sdate)
-                            detail.find('#end').text(datas[id].edate)
-                            detail.find('#edit,#delete').attr('data-id', id)
-                            detail.modal('show')
+                    eventClick: function(arg) {
+                        let id = arg.event.id
+                        let data = datas.find(item => item.id === 103)
+
+                        console.log(id)
+                        console.log(data)
+                        if (data.id !== 'undefined') {
+                            console.log(data.id);
+                            $('#title').text(data.title)
+                            $('#description').text(data.description)
+                            $('#start').text(data.start)
+                            $('#end').text(data.end)
+                            $('#edit,#delete').attr('data-id', id)
+                            modalAdd.show()
                         } else {
                             alert("Event is undefined");
                         }
