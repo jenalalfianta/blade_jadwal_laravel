@@ -78,6 +78,7 @@
                         tambahButton: {
                             text: '+ Tambah Jadwal',
                             click: function() {
+                                $('#resetData').show();
                                 modalAdd.show();
                             }
                         }
@@ -107,16 +108,16 @@
                     selectable: true,
                     eventClick: function(arg) {
                         let id = arg.event.id
-                        let data = datas.find(item => item.id === 103)
+                        let data = datas.find(d => d.id == id)
 
-                        console.log(id)
                         console.log(data)
+
                         if (data.id !== 'undefined') {
-                            console.log(data.id);
-                            $('#title').text(data.title)
-                            $('#description').text(data.description)
-                            $('#start').text(data.start)
-                            $('#end').text(data.end)
+                            $('#resetData').hide()
+                            $('#title').val(data.keterangan)
+                            $('#description').val(data.title)
+                            $('#start').val(data.start)
+                            $('#end').val(data.end)
                             $('#edit,#delete').attr('data-id', id)
                             modalAdd.show()
                         } else {
