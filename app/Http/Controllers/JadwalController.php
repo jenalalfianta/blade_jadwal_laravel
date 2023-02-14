@@ -26,7 +26,9 @@ class JadwalController extends Controller
         foreach ($jadwals as $jadwal){
             $datas[] = [
                 'id'         => $jadwal->id,
+                'kegiatan'   => $jadwal->title,
                 'title'      => $jadwal->ruang->nama_ruang,
+                'id_ruang'   => $jadwal->ruang->id,
                 'start'      => $jadwal->start,
                 'end'        => $jadwal->finish,
                 'keterangan' => $jadwal->keterangan,

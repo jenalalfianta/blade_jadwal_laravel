@@ -31,6 +31,8 @@
         <script>
             let datas = @json($datas);
             let calendar;
+            let calendar_picker;
+            let hours = moment().format('HH:mm');
 
             $( document ).ready(function() {
     // modal jadwal show or hide
@@ -78,6 +80,11 @@
                         tambahButton: {
                             text: '+ Tambah Jadwal',
                             click: function() {
+                                $('#ruang').val('Pilih Ruang')
+                                $('#ruang').trigger('change')
+                                $('#startTime').val('07:00')
+                                $('#endTime').val('12:00')
+                                $('#resetData').click()
                                 $('#resetData').show();
                                 modalAdd.show();
                             }
@@ -109,30 +116,33 @@
                     eventClick: function(arg) {
                         let id = arg.event.id
                         let data = datas.find(d => d.id == id)
-
                         console.log(data)
 
                         if (data.id !== 'undefined') {
                             $('#resetData').hide()
-                            $('#title').val(data.keterangan)
-                            $('#description').val(data.title)
-                            $('#start').val(data.start)
-                            $('#end').val(data.end)
+                            $('#title').val(data.kegiatan)
+                            $('#ruang').val(data.id_ruang)
+                            $('#ruang').trigger('change')
+                            calendar_picker.setDate(data.start)
+                            $('#keterangan').html(data.keterangan)
+                            $('#startTime').val(moment(data.start).format('HH:mm'))
+                            $('#endTime').val(moment(data.end).format('HH:mm'))
                             $('#edit,#delete').attr('data-id', id)
                             modalAdd.show()
                         } else {
-                            alert("Event is undefined");
+                            alert("Jadwal tidak ditemukan");
                         }
                     },
                 });
 
                 calendar.render();
 
-    //datetime picker js
-                $("#startDate").flatpickr(
+    //datetime picker flatpickr js
+                calendar_picker = $("#startDate").flatpickr(
                     {
                         altInput: true,
                         altFormat: "F j, Y",
+                        locale: 'id',
                         dateFormat: "Y-m-d",
                         locale: 'id',
                     }
