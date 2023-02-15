@@ -18,18 +18,17 @@
     @include('jadwal.layout.modal')
 
     @push('scripts')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/flowbite.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.3/index.global.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-        <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
-        <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        
-
+        <link href="assets/css/fullcalendarcustom.css" rel="stylesheet"/>
+        <link href="assets/css/flatpickr.min.css" rel="stylesheet"/>
+        <link href="assets/css/select2.min.css" rel="stylesheet"/>
+        <script src="assets/js/jquery-3.6.3.js"></script>
+        <script src="assets/js/fullcalendar-6.0.3.js"></script>
+        <script src="assets/js/flowbite.min.js"></script>
+        <script src="assets/js/moment-with-locales.min.js"></script>
+        <script src="assets/js/flatpickr.min.js"></script>
+        <script src="assets/js/flatpickr-locale-4.6.13-id.js"></script>
+        <script src="assets/js/selectize.min.js"></script>
+        <script src="assets/js/select2.min.js"></script>
 
         <script>
             let datas = {{ Js::from($datas) }};
@@ -60,7 +59,6 @@
                     calendar = new FullCalendar.Calendar(calendarEl, {
                     events: datas,
                     initialView: 'dayGridMonth',
-                    themeSystem: 'standard',
                     headerToolbar: {
                         left: 'prev,today,next tambahButton',
                         center: 'title',
