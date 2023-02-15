@@ -8,7 +8,7 @@
                 <span class="sr-only">Close modal</span>
             </button>
             <div class="px-6 py-6 lg:px-8">
-                <h3 class="text-center text-xl font-bold text-gray-900 dark:text-white">Tambah Jadwal Pemakaian Ruang</h3>
+                <h3 id="judul" class="text-center text-xl font-bold text-gray-900 dark:text-white">Tambah Jadwal Pemakaian Ruang</h3>
                 <form method="post" class="space-y-6" action="{{route('jadwal.store')}}">
                 @csrf
                 <input type="hidden" name="user" value="{{Auth::user()->id}}">
@@ -53,7 +53,7 @@
                         <textarea id="keterangan" name="keterangan" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Misalnya fakultas, prodi, pihak eksternal, dsb..">{{ old('keterangan') }}</textarea>
                         <x-input-error :messages="$errors->get('keterangan')" class="mt-2" />
                     </div>
-                    <button type="reset" id="resetData" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Clear Form</button>
+                    <button type="reset" id="delbtn" class="float-right text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete Jadwal</button>
                     <button type="submit" id="submitData" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button>
                     {{-- <button type="" id="saveDate" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button> --}}
                 </form>

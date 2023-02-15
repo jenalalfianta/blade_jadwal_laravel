@@ -21,22 +21,24 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.3/index.global.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
         <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
         <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        
+
 
         <script>
-            let datas = @json($datas);
+            let datas = {{ Js::from($datas) }};
             let calendar;
             let calendar_picker;
-            let hours = moment().format('HH:mm');
 
             $( document ).ready(function() {
     // modal jadwal show or hide
-                const $targetEl = document.getElementById('modalAdd');
+                const $targetEl = $('#modalAdd')[0];
                 const options = {
                     backdrop: 'static',
                     backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
@@ -58,17 +60,12 @@
                     calendar = new FullCalendar.Calendar(calendarEl, {
                     events: datas,
                     initialView: 'dayGridMonth',
-                    themeSystem: 'bootstrap5',
+                    themeSystem: 'standard',
                     headerToolbar: {
                         left: 'prev,today,next tambahButton',
                         center: 'title',
                         right: 'listMonth dayGridMonth,timeGridWeek,timeGridDay'
                     },
-                    // views: {
-                    //     listDay: { buttonText: 'list day' },
-                    //     listWeek: { buttonText: 'list week' },
-                    //     listMonth: { buttonText: 'list month' }
-                    // },
                     buttonText: {
                         today: 'hari ini',
                         month: 'bulan',
@@ -76,16 +73,20 @@
                         day: 'hari',
                         listMonth: 'seluruh jadwal'
                     },
+                    noEventsContent: 'Tidak ada jadwal untuk ditampilkan',
                     customButtons: {
                         tambahButton: {
                             text: '+ Tambah Jadwal',
                             click: function() {
+                                $('#judul').html('Tambah Jadwal Pemakaian Ruang')
+                                $('#title').val('')
                                 $('#ruang').val('Pilih Ruang')
                                 $('#ruang').trigger('change')
+                                calendar_picker.setDate(moment().format())
                                 $('#startTime').val('07:00')
                                 $('#endTime').val('12:00')
-                                $('#resetData').click()
-                                $('#resetData').show();
+                                $('#keterangan').html('')
+                                $('#delbtn').hide()
                                 modalAdd.show();
                             }
                         }
@@ -113,13 +114,12 @@
                     eventDisplay: 'block',
                     editable: true,
                     selectable: true,
-                    eventClick: function(arg) {
-                        let id = arg.event.id
+                    eventClick: function(info) {
+                        let id = info.event.id
                         let data = datas.find(d => d.id == id)
-                        console.log(data)
 
                         if (data.id !== 'undefined') {
-                            $('#resetData').hide()
+                            $('#judul').html('Edit Jadwal Pemakaian Ruang')
                             $('#title').val(data.kegiatan)
                             $('#ruang').val(data.id_ruang)
                             $('#ruang').trigger('change')
@@ -127,12 +127,12 @@
                             $('#keterangan').html(data.keterangan)
                             $('#startTime').val(moment(data.start).format('HH:mm'))
                             $('#endTime').val(moment(data.end).format('HH:mm'))
-                            $('#edit,#delete').attr('data-id', id)
+                            $('#delbtn').show()
                             modalAdd.show()
                         } else {
                             alert("Jadwal tidak ditemukan");
                         }
-                    },
+                    }
                 });
 
                 calendar.render();
@@ -172,7 +172,6 @@
 
     //select search js
                 $('.js-example-basic-single').select2();
-
 
             });
 
