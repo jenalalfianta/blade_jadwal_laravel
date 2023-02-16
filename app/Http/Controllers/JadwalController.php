@@ -117,7 +117,30 @@ class JadwalController extends Controller
      */
     public function update(Request $request, Jadwal $jadwal)
     {
-        //
+
+        $today = Carbon::now()->toDateString();
+
+        $request->validate([
+            'title'         => 'required',
+            'ruang'         => 'required',
+            'startDate'     => 'required|after_or_equal:'.$today,
+            'startTime'     => 'required|date_format:H:i',
+            'endTime'       => 'required|date_format:H:i|after:startTime',
+            // 'keterangan'    => 'required',
+        ]);
+
+        $start  = $request->startDate.' '.$request->startTime.':00';
+        $finish = $request->startDate.' '.$request->endTime.':00';
+
+        $jadwal->update([
+            'ruang_id'      => $request->ruang,
+            'title'         => $request->title,
+            'start'         => $start,
+            'finish'        => $finish,
+            'keterangan'    => $request->keterangan,
+        ]);
+
+        return redirect(route('jadwal.index'));
     }
 
     /**

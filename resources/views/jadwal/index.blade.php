@@ -34,24 +34,33 @@
             let datas = {{ Js::from($datas) }};
             let calendar;
             let calendar_picker;
+            let calendar_picker_edit;
+            let timeStart;
+            let timeEnd;
 
             $( document ).ready(function() {
     // modal jadwal show or hide
-                const $targetEl = $('#modalAdd')[0];
+                const $modalAdd = $('#modalAdd')[0];
+                const $modalEdit = $('#modalEdit')[0];
                 const options = {
                     backdrop: 'static',
                     backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
                     closable: false,
                 };
 
-                const modalAdd = new Modal($targetEl, options);
+                const modalAdd = new Modal($modalAdd, options);
+                const modalEdit = new Modal($modalEdit, options);
 
                 @if (count($errors) > 0)
                     modalAdd.show();
                 @endif
 
-                $('#closeModal').click(function(){
+                $('#closeModalAdd').click(function(){
                     modalAdd.hide();
+                });
+
+                $('#closeModalEdit').click(function(){
+                    modalEdit.hide();
                 });
 
     //fullcalendar js
@@ -76,15 +85,16 @@
                         tambahButton: {
                             text: '+ Tambah Jadwal',
                             click: function() {
-                                $('#judul').html('Tambah Jadwal Pemakaian Ruang')
-                                $('#title').val('')
-                                $('#ruang').val('Pilih Ruang')
-                                $('#ruang').trigger('change')
+                                // $('#jadwalForm').attr('action', 'jadwal/store');
+                                // $('#judul').html('Tambah Jadwal Pemakaian Ruang')
+                                // $('#title').val('')
+                                // $('#ruang').val('Pilih Ruang')
+                                // $('#ruang').trigger('change')
+                                // $('#keterangan').html('')
+                                // $('#delbtn').hide()
                                 calendar_picker.setDate(moment().format())
-                                $('#startTime').val('07:00')
-                                $('#endTime').val('12:00')
-                                $('#keterangan').html('')
-                                $('#delbtn').hide()
+                                $('#startTime').val('08:00')
+                                $('#endTime').val('11:00')
                                 modalAdd.show();
                             }
                         }
@@ -117,16 +127,18 @@
                         let data = datas.find(d => d.id == id)
 
                         if (data.id !== 'undefined') {
-                            $('#judul').html('Edit Jadwal Pemakaian Ruang')
-                            $('#title').val(data.kegiatan)
-                            $('#ruang').val(data.id_ruang)
-                            $('#ruang').trigger('change')
-                            calendar_picker.setDate(data.start)
-                            $('#keterangan').html(data.keterangan)
-                            $('#startTime').val(moment(data.start).format('HH:mm'))
-                            $('#endTime').val(moment(data.end).format('HH:mm'))
-                            $('#delbtn').show()
-                            modalAdd.show()
+                            // $('#jadwalEditForm').attr('action', 'jadwal/update/'+id);
+                            // $('#jadwalForm').append('<input type="hidden" name="_method" value="PUT">');
+                            // $('#judul').html('Edit Jadwal Pemakaian Ruang')
+                            $('#titleEdit').val(data.kegiatan)
+                            $('#ruangEdit').val(data.id_ruang)
+                            $('#ruangEdit').trigger('change')
+                            calendar_picker_edit.setDate(data.start)
+                            $('#keteranganEdit').val(data.keterangan)
+                            $('#startTimeEdit').val(moment(data.start).format('HH:mm'))
+                            $('#endTimeEdit').val(moment(data.end).format('HH:mm'))
+                            // $('#delbtn').show()
+                            modalEdit.show()
                         } else {
                             alert("Jadwal tidak ditemukan");
                         }
@@ -135,7 +147,7 @@
 
                 calendar.render();
 
-    //datetime picker flatpickr js
+    //datetime picker flatpickr js form add
                 calendar_picker = $("#startDate").flatpickr(
                     {
                         altInput: true,
@@ -146,25 +158,62 @@
                     }
                 );
 
-                $("#startTime").flatpickr(
+                timeStart = $("#startTime").flatpickr(
                     {
                         enableTime: true,
                         noCalendar: true,
                         dateFormat: "H:i",
                         locale: 'id',
                         minTime: "07:00",
-                        maxTime: "16:00"
+                        maxTime: "16:00",
+                        defaultHour: "07"
                     }
                 );
 
-                $("#endTime").flatpickr(
+                timeEnd = $("#endTime").flatpickr(
                     {
                         enableTime: true,
                         noCalendar: true,
                         dateFormat: "H:i",
                         locale: 'id',
                         minTime: "08:00",
-                        maxTime: "16:00"
+                        maxTime: "16:00",
+                        defaultHour: "12"
+                    }
+                );
+
+    //datetime picker flatpickr js form edit
+                calendar_picker_edit = $("#startDateEdit").flatpickr(
+                    {
+                        altInput: true,
+                        altFormat: "F j, Y",
+                        locale: 'id',
+                        dateFormat: "Y-m-d",
+                        locale: 'id',
+                    }
+                );
+
+                timeStart = $("#startTimeEdit").flatpickr(
+                    {
+                        enableTime: true,
+                        noCalendar: true,
+                        dateFormat: "H:i",
+                        locale: 'id',
+                        minTime: "07:00",
+                        maxTime: "16:00",
+                        defaultHour: "07"
+                    }
+                );
+
+                timeEnd = $("#endTimeEdit").flatpickr(
+                    {
+                        enableTime: true,
+                        noCalendar: true,
+                        dateFormat: "H:i",
+                        locale: 'id',
+                        minTime: "08:00",
+                        maxTime: "16:00",
+                        defaultHour: "12"
                     }
                 );
 
