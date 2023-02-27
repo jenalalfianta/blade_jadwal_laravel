@@ -127,9 +127,7 @@
                         let data = datas.find(d => d.id == id)
 
                         if (data.id !== 'undefined') {
-                            // $('#jadwalEditForm').attr('action', 'jadwal/update/'+id);
-                            // $('#jadwalForm').append('<input type="hidden" name="_method" value="PUT">');
-                            // $('#judul').html('Edit Jadwal Pemakaian Ruang')
+                            $('#jadwalEditForm').attr('action', '{{ route('jadwal.store') }}'+'/'+id);
                             $('#titleEdit').val(data.kegiatan)
                             $('#ruangEdit').val(data.id_ruang)
                             $('#ruangEdit').trigger('change')

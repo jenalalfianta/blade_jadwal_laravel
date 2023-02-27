@@ -72,7 +72,7 @@
             </button>
             <div class="px-6 py-6 lg:px-8">
                 <h3 id="judul" class="text-center text-xl font-bold text-gray-900 dark:text-white">Edit Jadwal Pemakaian Ruang</h3>
-                <form id="jadwalEditForm" method="post" class="space-y-6" action="{{route('jadwal.update')}}">
+                <form id="jadwalEditForm" method="post" class="space-y-6" action="{{route('jadwal.update',Auth::user()->id)}}">
                 @csrf
                 @method('PUT')
                 {{-- <input type="hidden" name="user" value="{{Auth::user()->id}}"> --}}

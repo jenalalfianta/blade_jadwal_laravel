@@ -10,11 +10,7 @@ use Illuminate\Support\Carbon;
 class JadwalController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $datas      = [];
@@ -40,22 +36,13 @@ class JadwalController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
 
@@ -86,69 +73,48 @@ class JadwalController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Jadwal  $jadwal
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Jadwal $jadwal)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Jadwal  $jadwal
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Jadwal $jadwal)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Jadwal  $jadwal
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Jadwal $jadwal)
     {
 
         $today = Carbon::now()->toDateString();
 
         $request->validate([
-            'title'         => 'required',
-            'ruang'         => 'required',
-            'startDate'     => 'required|after_or_equal:'.$today,
-            'startTime'     => 'required|date_format:H:i',
-            'endTime'       => 'required|date_format:H:i|after:startTime',
-            // 'keterangan'    => 'required',
+            'titleEdit'         => 'required',
+            'ruangEdit'         => 'required',
+            'startDateEdit'     => 'required|after_or_equal:'.$today,
+            'startTimeEdit'     => 'required|date_format:H:i',
+            'endTimeEdit'       => 'required|date_format:H:i|after:startTime',
+            // 'keteranganEdit'    => 'required',
         ]);
 
-        $start  = $request->startDate.' '.$request->startTime.':00';
-        $finish = $request->startDate.' '.$request->endTime.':00';
+        $start  = $request->startDateEdit.' '.$request->startTimeEdit.':00';
+        $finish = $request->startDateEdit.' '.$request->endTimeEdit.':00';
 
         $jadwal->update([
-            'ruang_id'      => $request->ruang,
-            'title'         => $request->title,
+            'ruang_id'      => $request->ruangEdit,
+            'title'         => $request->titleEdit,
             'start'         => $start,
             'finish'        => $finish,
-            'keterangan'    => $request->keterangan,
+            'keterangan'    => $request->keteranganEdit,
         ]);
 
         return redirect(route('jadwal.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Jadwal  $jadwal
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Jadwal $jadwal)
     {
         //
