@@ -39,7 +39,7 @@
             let timeEnd;
 
             $( document ).ready(function() {
-    // modal jadwal show or hide
+    // modal jadwal add/edit instance
                 const $modalAdd = $('#modalAdd')[0];
                 const $modalEdit = $('#modalEdit')[0];
                 const options = {
@@ -51,10 +51,17 @@
                 const modalAdd = new Modal($modalAdd, options);
                 const modalEdit = new Modal($modalEdit, options);
 
-                @if (count($errors) > 0)
+    //jika ada validasi create error, tampilkan di modal create
+                @if (count($errors->create) > 0)
                     modalAdd.show();
                 @endif
 
+    //jika ada validasi update error, tampilkan di modal update
+                @if (count($errors->update) > 0)
+                    modalEdit.show();
+                @endif
+    
+    //modal di hide dulu keduanya
                 $('#closeModalAdd').click(function(){
                     modalAdd.hide();
                 });
@@ -63,7 +70,7 @@
                     modalEdit.hide();
                 });
 
-    //fullcalendar js
+    //fullcalendar js instance
                 let calendarEl = $('#calendar')[0];
                     calendar = new FullCalendar.Calendar(calendarEl, {
                     events: datas,
@@ -85,13 +92,7 @@
                         tambahButton: {
                             text: '+ Tambah Jadwal',
                             click: function() {
-                                // $('#jadwalForm').attr('action', 'jadwal/store');
-                                // $('#judul').html('Tambah Jadwal Pemakaian Ruang')
-                                // $('#title').val('')
-                                // $('#ruang').val('Pilih Ruang')
-                                // $('#ruang').trigger('change')
-                                // $('#keterangan').html('')
-                                // $('#delbtn').hide()
+
                                 calendar_picker.setDate(moment().format())
                                 $('#startTime').val('08:00')
                                 $('#endTime').val('11:00')
@@ -145,7 +146,7 @@
 
                 calendar.render();
 
-    //datetime picker flatpickr js form add
+    //datetime picker flatpickr js form add instance
                 calendar_picker = $("#startDate").flatpickr(
                     {
                         altInput: true,

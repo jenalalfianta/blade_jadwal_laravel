@@ -48,7 +48,8 @@ class JadwalController extends Controller
 
         $today = Carbon::now()->toDateString();
 
-        $request->validate([
+        $request->validateWithBag('create',
+        [
             'title'         => 'required',
             'ruang'         => 'required',
             'startDate'     => 'required|after_or_equal:'.$today,
@@ -91,7 +92,8 @@ class JadwalController extends Controller
 
         $today = Carbon::now()->toDateString();
 
-        $request->validate([
+        $request->validateWithBag('update',
+        [
             'titleEdit'         => 'required',
             'ruangEdit'         => 'required',
             'startDateEdit'     => 'required|after_or_equal:'.$today,
