@@ -21,6 +21,7 @@
         <link href="assets/css/fullcalendarcustom.css" rel="stylesheet"/>
         <link href="assets/css/flatpickr.min.css" rel="stylesheet"/>
         <link href="assets/css/select2.min.css" rel="stylesheet"/>
+        <link href="assets/css/toastr.min.css" rel="stylesheet"/>
         <script src="assets/js/jquery-3.6.3.js"></script>
         <script src="assets/js/fullcalendar-6.0.3.js"></script>
         <script src="assets/js/flowbite.min.js"></script>
@@ -29,49 +30,73 @@
         <script src="assets/js/flatpickr-locale-4.6.13-id.js"></script>
         <script src="assets/js/selectize.min.js"></script>
         <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/toastr.min.js"></script>
 
         <script>
-            let datas = {{ Js::from($datas) }};
-            let calendar;
-            let calendar_picker;
-            let calendar_picker_edit;
-            let timeStart;
-            let timeEnd;
+            let datas = {{ Js::from($datas) }}
+            let calendar
+            let calendar_picker
+            let calendar_picker_edit
+            let timeStart
+            let timeEnd
 
             $( document ).ready(function() {
     // modal jadwal add/edit instance
-                const $modalAdd = $('#modalAdd')[0];
-                const $modalEdit = $('#modalEdit')[0];
+                const $modalAdd = $('#modalAdd')[0]
+                const $modalEdit = $('#modalEdit')[0]
                 const options = {
                     backdrop: 'static',
                     backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
                     closable: false,
-                };
+                }
 
-                const modalAdd = new Modal($modalAdd, options);
-                const modalEdit = new Modal($modalEdit, options);
+                const modalAdd = new Modal($modalAdd, options)
+                const modalEdit = new Modal($modalEdit, options)
 
     //jika ada validasi create error, tampilkan di modal create
                 @if (count($errors->create) > 0)
-                    modalAdd.show();
+                    modalAdd.show()
                 @endif
 
     //jika ada validasi update error, tampilkan di modal update
                 @if (count($errors->update) > 0)
-                    modalEdit.show();
+                    $('#jadwalEditForm').attr('action', '{{ route('jadwal.store') }}'+'/'+ {{old('backupEdit')}} )
+                    modalEdit.show()
                 @endif
     
     //modal di hide dulu keduanya
                 $('#closeModalAdd').click(function(){
-                    modalAdd.hide();
-                });
+                    modalAdd.hide()
+                })
 
                 $('#closeModalEdit').click(function(){
-                    modalEdit.hide();
-                });
+                    modalEdit.hide()
+                })
+
+    //toastr instance
+                const toast = toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "1000",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                @if (Session::has('message'))
+                    toastr["info"]("{{ session('message') }}", "Info")
+                @endif
 
     //fullcalendar js instance
-                let calendarEl = $('#calendar')[0];
+                let calendarEl = $('#calendar')[0]
                     calendar = new FullCalendar.Calendar(calendarEl, {
                     events: datas,
                     initialView: 'dayGridMonth',
@@ -96,7 +121,7 @@
                                 calendar_picker.setDate(moment().format())
                                 $('#startTime').val('08:00')
                                 $('#endTime').val('11:00')
-                                modalAdd.show();
+                                modalAdd.show()
                             }
                         }
                     },
@@ -128,7 +153,9 @@
                         let data = datas.find(d => d.id == id)
 
                         if (data.id !== 'undefined') {
-                            $('#jadwalEditForm').attr('action', '{{ route('jadwal.store') }}'+'/'+id);
+                            $('#hidden').val(data.id)
+                            $('#jadwalEditForm').attr('action', '{{ route('jadwal.store') }}'+'/'+id)
+                            $('#formDelete').attr('action', '{{ route('jadwal.store') }}'+'/'+id)
                             $('#titleEdit').val(data.kegiatan)
                             $('#ruangEdit').val(data.id_ruang)
                             $('#ruangEdit').trigger('change')
@@ -139,12 +166,12 @@
                             // $('#delbtn').show()
                             modalEdit.show()
                         } else {
-                            alert("Jadwal tidak ditemukan");
+                            alert("Jadwal tidak ditemukan")
                         }
                     }
-                });
+                })
 
-                calendar.render();
+                calendar.render()
 
     //datetime picker flatpickr js form add instance
                 calendar_picker = $("#startDate").flatpickr(
@@ -155,7 +182,7 @@
                         dateFormat: "Y-m-d",
                         locale: 'id',
                     }
-                );
+                )
 
                 timeStart = $("#startTime").flatpickr(
                     {
@@ -167,7 +194,7 @@
                         maxTime: "16:00",
                         defaultHour: "07"
                     }
-                );
+                )
 
                 timeEnd = $("#endTime").flatpickr(
                     {
@@ -179,7 +206,7 @@
                         maxTime: "16:00",
                         defaultHour: "12"
                     }
-                );
+                )
 
     //datetime picker flatpickr js form edit
                 calendar_picker_edit = $("#startDateEdit").flatpickr(
@@ -190,7 +217,7 @@
                         dateFormat: "Y-m-d",
                         locale: 'id',
                     }
-                );
+                )
 
                 timeStart = $("#startTimeEdit").flatpickr(
                     {
@@ -202,7 +229,7 @@
                         maxTime: "16:00",
                         defaultHour: "07"
                     }
-                );
+                )
 
                 timeEnd = $("#endTimeEdit").flatpickr(
                     {
@@ -214,12 +241,12 @@
                         maxTime: "16:00",
                         defaultHour: "12"
                     }
-                );
+                )
 
     //select search js
-                $('.js-example-basic-single').select2();
+                $('.js-example-basic-single').select2()
 
-            });
+            })
 
         </script>
     @endpush

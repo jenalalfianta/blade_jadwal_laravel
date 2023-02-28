@@ -10,7 +10,6 @@ use Illuminate\Support\Carbon;
 class JadwalController extends Controller
 {
 
-
     public function index()
     {
         $datas      = [];
@@ -35,13 +34,6 @@ class JadwalController extends Controller
         return view('jadwal.index', compact('datas', 'ruangs'));
 
     }
-
-
-    public function create()
-    {
-        //
-    }
-
 
     public function store(Request $request)
     {
@@ -69,23 +61,10 @@ class JadwalController extends Controller
             'finish'        => $finish,
             'keterangan'    => $request->keterangan,
         ]);
-
-        return redirect(route('jadwal.index'));
+        
+        return redirect('/jadwal#calendar')->with('message','Jadwal Berhasil Ditambahkan :)');
 
     }
-
-
-    public function show(Jadwal $jadwal)
-    {
-        //
-    }
-
-
-    public function edit(Jadwal $jadwal)
-    {
-        //
-    }
-
 
     public function update(Request $request, Jadwal $jadwal)
     {
@@ -113,12 +92,13 @@ class JadwalController extends Controller
             'keterangan'    => $request->keteranganEdit,
         ]);
 
-        return redirect(route('jadwal.index'));
+        return redirect('/jadwal#calendar')->with('message','Jadwal Berhasil Diperbaharui :)');
     }
 
 
     public function destroy(Jadwal $jadwal)
     {
-        //
+        $event = Jadwal::find($jadwal->id)->delete();
+        return redirect('/jadwal#calendar')->with('message','Jadwal Berhasil Ditambahkan :)');
     }
 }

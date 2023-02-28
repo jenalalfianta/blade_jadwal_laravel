@@ -53,7 +53,7 @@
                         <textarea id="keterangan" name="keterangan" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Misalnya fakultas, prodi, pihak eksternal, dsb..">{{ old('keterangan') }}</textarea>
                         <x-input-error :messages="$errors->create->get('keterangan')" class="mt-2" />
                     </div>
-                    <button type="submit" id="submitData" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button>
+                    <button id="submitData" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button>
                     {{-- <button type="" id="saveDate" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button> --}}
                 </form>
             </div>
@@ -72,10 +72,11 @@
             </button>
             <div class="px-6 py-6 lg:px-8">
                 <h3 id="judul" class="text-center text-xl font-bold text-gray-900 dark:text-white">Edit Jadwal Pemakaian Ruang</h3>
-                <form id="jadwalEditForm" method="post" class="space-y-6" action="{{route('jadwal.update',Auth::user()->id)}}">
+                <form id="jadwalEditForm" method="post" class="space-y-6" action="{{route('jadwal.update',1)}}">
                 @csrf
                 @method('PUT')
-                {{-- <input type="hidden" name="user" value="{{Auth::user()->id}}"> --}}
+                <input id="hidden" type="hidden" name="backupEdit" value="{{old('backupEdit')}}">
+                {{-- <input type="hidden" name="user" value="{{1}}"> --}}
                     <div>
                         <label for="titleEdit" class="flex-grow block font-medium text-sm text-gray-700">Nama Kegiatan</label>
                         <input name="titleEdit" value="{{ old('titleEdit') }}" id="titleEdit" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Misalnya lokakarya, seminar, kuliah umum dsb..">
@@ -116,10 +117,14 @@
                         <label for="keterangan" class="block text-sm font-medium text-gray-900 dark:text-white">Keterangan (Opsional)</label>
                         <textarea id="keteranganEdit" name="keteranganEdit" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Misalnya fakultas, prodi, pihak eksternal, dsb..">{{ old('keterangan') }}</textarea>
                         <x-input-error :messages="$errors->update->get('keterangan')" class="mt-2" />
-                    </div>
-                    <button id="delbtn" class="float-right text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete Jadwal</button>
-                    <button type="submit" id="submitData" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button>
+                    </div>           
+                    <button onclick="return confirm('Simpan perubahan jadwal ?')" id="submitData" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button>
                     {{-- <button type="" id="saveDate" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Jadwal</button> --}}
+                </form>
+                <form id="formDelete" class="relative" action="{{route('jadwal.destroy', 1)}}" method="Post">
+                    @csrf
+                    @method('DELETE')
+                    <button onclick="return confirm('Hapus jadwal ?')" id="delbtn" class="mt-[-40px] float-right text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete Jadwal</button>
                 </form>
             </div>
         </div>
