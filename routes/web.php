@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RuangController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('jadwal', JadwalController::class);
+Route::resource('ruang', RuangController::class);
 
 Route::get('/', function () {
     return view('welcome');
