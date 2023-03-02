@@ -62,7 +62,7 @@ class JadwalController extends Controller
             'keterangan'    => $request->keterangan,
         ]);
         
-        return redirect('/jadwal#calendar')->with('message','Jadwal Berhasil Ditambahkan :)');
+        return redirect('jadwal')->with('message','Jadwal Berhasil Ditambahkan :)');
 
     }
 
@@ -92,13 +92,13 @@ class JadwalController extends Controller
             'keterangan'    => $request->keteranganEdit,
         ]);
 
-        return redirect('/jadwal#calendar')->with('message','Jadwal Berhasil Diperbaharui :)');
+        return redirect('jadwal')->with('message','Jadwal Berhasil Diperbaharui :)');
     }
 
 
     public function destroy(Jadwal $jadwal)
     {
         Jadwal::find($jadwal->id)->delete();
-        return redirect('/jadwal#calendar')->with('message','Jadwal Berhasil Dihapus :)');
+        return redirect('jadwal')->with('message','Jadwal Berhasil Dihapus :)');
     }
 }

@@ -18,19 +18,19 @@
     @include('jadwal.layout.modal')
 
     @push('scripts')
-        <link href="assets/css/fullcalendarcustom.css" rel="stylesheet"/>
-        <link href="assets/css/flatpickr.min.css" rel="stylesheet"/>
-        <link href="assets/css/select2.min.css" rel="stylesheet"/>
-        <link href="assets/css/toastr.min.css" rel="stylesheet"/>
-        <script src="assets/js/jquery-3.6.3.js"></script>
-        <script src="assets/js/fullcalendar-6.0.3.js"></script>
-        <script src="assets/js/flowbite.min.js"></script>
-        <script src="assets/js/moment-with-locales.min.js"></script>
-        <script src="assets/js/flatpickr.min.js"></script>
-        <script src="assets/js/flatpickr-locale-4.6.13-id.js"></script>
-        <script src="assets/js/selectize.min.js"></script>
-        <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/toastr.min.js"></script>
+        <link href="{{asset('assets/css/fullcalendarcustom.css')}}" rel="stylesheet"/>
+        <link href="{{asset('assets/css/flatpickr.min.css')}}" rel="stylesheet"/>
+        <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
+        <link href="{{asset('assets/css/toastr.min.css')}}" rel="stylesheet"/>
+        <script src="{{asset('assets/js/jquery-3.6.3.js')}}"></script>
+        <script src="{{asset('assets/js/fullcalendar-6.0.3.js')}}"></script>
+        <script src="{{asset('assets/js/flowbite.min.js')}}"></script>
+        <script src="{{asset('assets/js/moment-with-locales.min.js')}}"></script>
+        <script src="{{asset('assets/js/flatpickr.min.js')}}"></script>
+        <script src="{{asset('assets/js/flatpickr-locale-4.6.13-id.js')}}"></script>
+        <script src="{{asset('assets/js/selectize.min.js')}}"></script>
+        <script src="{{asset('assets/js/select2.min.js')}}"></script>
+        <script src="{{asset('assets/js/toastr.min.js')}}"></script>
 
         <script>
             let datas = {{ Js::from($datas) }}

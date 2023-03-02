@@ -18,11 +18,11 @@
     </div>
 
     @push('scripts')
-        <link href="../assets/css/toastr.min.css" rel="stylesheet"/>
-        <link href="../assets/css/fontawesome-v5.15.4.css" rel="stylesheet"/>
-        <script src="../assets/js/jquery-3.6.3.js"></script>
-        <script src="../assets/js/toastr.min.js"></script>
-        <script src="../assets/js/fontawesome-v5.15.4.js"></script>
+        <link href="{{asset('assets/css/toastr.min.css')}}" rel="stylesheet"/>
+        <link href="{{asset('assets/css/fontawesome-v5.15.4.css')}}" rel="stylesheet"/>
+        <script src="{{asset('assets/js/jquery-3.6.3.js')}}"></script>
+        <script src="{{asset('assets/js/toastr.min.js')}}"></script>
+        <script src="{{asset('assets/js/fontawesome-v5.15.4.js')}}"></script>
         
         <script>
             $(document).ready(function() {

@@ -30,7 +30,12 @@ class RuangController extends Controller
     
     public function store(Request $request)
     {
-        //
+        $request->validateWithBag('create',
+        [
+            'kode_ruang'        => 'required',
+            'nama_ruang'        => 'required',
+            'lantai_ruang'      => 'required',
+        ]);
     }
 
     
@@ -42,7 +47,7 @@ class RuangController extends Controller
     
     public function edit(Ruang $ruang)
     {
-        //
+        return view('ruang.edit');
     }
 
     
