@@ -61,6 +61,7 @@
     //jika ada validasi update error, tampilkan di modal update
                 @if (count($errors->update) > 0)
                     $('#jadwalEditForm').attr('action', '{{ route('jadwal.store') }}'+'/'+ {{old('backupEdit')}} )
+                    $('#formDelete').attr('action', '{{ route('jadwal.store') }}'+'/'+ {{old('backupEdit')}} )
                     modalEdit.show()
                 @endif
     

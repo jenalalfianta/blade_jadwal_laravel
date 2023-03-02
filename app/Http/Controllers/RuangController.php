@@ -10,18 +10,21 @@ class RuangController extends Controller
 
     public function index(Request $request)
     {
-        $ruangs = Ruang::paginate(10);
-        return view('ruang.index')->with('ruangs', $ruangs);
-    }
+        $filter = $request->query('filter');
+        
+        if(!empty($filter)){
+            $ruangs = Ruang::sortable()->where('ruangs.nama_ruang', 'like', '%'.$filter.'%')->paginate(5);
+        }else{
+            $filter = '';
+            $ruangs = Ruang::sortable()->paginate(5);
+        }
 
-    public function ruangPaging()
-    {
-
+        return view('ruang.index', compact('ruangs', 'filter'));
     }
 
     public function create()
     {
-
+        return view('ruang.create');
     }
 
     
@@ -51,6 +54,7 @@ class RuangController extends Controller
     
     public function destroy(Ruang $ruang)
     {
-        //
+        Ruang::find($ruang->id)->delete();
+        return redirect('/ruang')->with('message','Ruang Berhasil Dihapus :)');
     }
 }
