@@ -32,14 +32,15 @@
 
         <div>
             <label for="lantai_ruang" class="flex-grow block font-medium text-sm text-gray-700">Lantai Ruang</label>
-            <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select name="lantai_ruang" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option disabled selected>Pilih Lantai</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option {{ old('lantai_ruang') == 1 ? 'selected': "" }} value="1">1</option>
+            <option {{ old('lantai_ruang') == 2 ? 'selected': "" }} value="2">2</option>
+            <option {{ old('lantai_ruang') == 3 ? 'selected': "" }} value="3">3</option>
+            <option {{ old('lantai_ruang') == 4 ? 'selected': "" }} value="4">4</option>
+            <option {{ old('lantai_ruang') == 5 ? 'selected': "" }} value="5">5</option>
             </select>
+            <x-input-error :messages="$errors->create->get('lantai_ruang')" class="mt-2" />
         </div>
    
         <button id="submitData" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan Data</button>

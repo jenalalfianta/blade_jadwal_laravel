@@ -13,10 +13,10 @@ class RuangController extends Controller
         $filter = $request->query('filter');
         
         if(!empty($filter)){
-            $ruangs = Ruang::sortable()->where('ruangs.nama_ruang', 'like', '%'.$filter.'%')->paginate(5);
+            $ruangs = Ruang::sortable()->where('ruangs.nama_ruang', 'like', '%'.$filter.'%')->orderBy('id','DESC')->paginate(5);
         }else{
             $filter = '';
-            $ruangs = Ruang::sortable()->paginate(5);
+            $ruangs = Ruang::sortable()->orderBy('id','DESC')->paginate(5);
         }
 
         return view('ruang.index', compact('ruangs', 'filter'));
@@ -32,10 +32,20 @@ class RuangController extends Controller
     {
         $request->validateWithBag('create',
         [
-            'kode_ruang'        => 'required',
+            'kode_ruang'        => 'required|unique:ruangs',
             'nama_ruang'        => 'required',
             'lantai_ruang'      => 'required',
         ]);
+
+        Ruang::create([
+            'kode_ruang'        => ucfirst($request->kode_ruang),
+            'nama_ruang'        => ucfirst($request->nama_ruang),
+            'lantai_ruang'      => ucfirst($request->lantai_ruang),
+
+        ]);
+        
+        return redirect('ruang')->with('message','Ruang Berhasil Ditambahkan :)');
+
     }
 
     
