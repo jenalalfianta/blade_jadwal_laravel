@@ -76,7 +76,6 @@
                 @csrf
                 @method('PUT')
                 <input id="hidden" type="hidden" name="backupEdit" value="{{old('backupEdit')}}">
-                {{-- <input type="hidden" name="user" value="{{1}}"> --}}
                     <div>
                         <label for="titleEdit" class="flex-grow block font-medium text-sm text-gray-700">Nama Kegiatan</label>
                         <input name="titleEdit" value="{{ old('titleEdit') }}" id="titleEdit" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Misalnya lokakarya, seminar, kuliah umum dsb..">
@@ -88,7 +87,7 @@
                         <select name="ruangEdit" id="ruangEdit" style="width: 100%"  class="js-example-basic-single bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected disabled>Pilih Ruang</option>
                         @foreach ($ruangs as $ruang)
-                        <option {{ old('ruangEdit') == $ruang->id ? "selected" : "" }} value="{{ $ruang->id }}">{{ $ruang->nama_ruang }}</option>
+                            <option {{ old('ruangEdit') == $ruang->id ? "selected" : "" }} value="{{ $ruang->id }}">{{ $ruang->nama_ruang }}</option>
                         @endforeach
                         </select>
                         <x-input-error :messages="$errors->update->get('ruangEdit')" class="mt-2" />

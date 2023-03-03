@@ -57,13 +57,27 @@ class RuangController extends Controller
     
     public function edit(Ruang $ruang)
     {
-        return view('ruang.edit');
+        return view('ruang.edit', ['ruang' => $ruang]);
     }
 
     
     public function update(Request $request, Ruang $ruang)
     {
-        //
+        $request->validateWithBag('create',
+        [
+            'kode_ruang'        => 'required|unique:ruangs',
+            'nama_ruang'        => 'required',
+            'lantai_ruang'      => 'required',
+        ]);
+
+        Ruang::create([
+            'kode_ruang'        => ucfirst($ruang->kode_ruang),
+            'nama_ruang'        => ucfirst($ruang->nama_ruang),
+            'lantai_ruang'      => ucfirst($ruang->lantai_ruang),
+
+        ]);
+        
+        return redirect('ruang')->with('message','Ruang Berhasil Ditambahkan :)');
     }
 
     
